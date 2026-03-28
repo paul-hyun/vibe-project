@@ -1,0 +1,24 @@
+---
+description: Next.js App Router + TypeScript 공통 규칙
+alwaysApply: true
+---
+
+# 공통 개발 규칙 (Next.js + TypeScript)
+
+이 규칙은 프로젝트 전반에 항상 적용한다.
+
+## 해야 할 것
+
+- Next.js는 `app` 디렉터리 기반 App Router로 구현한다.
+- 라우트 파일은 `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx` 관례를 따른다.
+- 새 코드(컴포넌트/유틸/서버 로직)는 TypeScript(`.ts`, `.tsx`)로 작성한다.
+- 타입 안정성을 우선하며, 함수 인자/반환 타입을 가능한 명시한다.
+- 서버 전용 로직은 서버에서만 실행되도록 분리한다.
+- 불확실한 요구사항은 단정하지 말고 먼저 질문한다.
+
+## 하면 안 되는 것
+
+- Pages Router(`pages` 디렉터리) 기준으로 코드를 작성하지 않는다.
+- JavaScript 파일을 기본 산출물로 만들지 않는다.
+- `any` 남용 또는 무리한 타입 단언으로 타입 에러를 숨기지 않는다.
+- 사용자 요청 없이 대규모 구조 변경을 임의로 진행하지 않는다.
