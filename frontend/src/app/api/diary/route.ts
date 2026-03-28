@@ -6,7 +6,17 @@ const isValidMood = (value: string): value is Mood => {
   return MOODS.includes(value as Mood);
 };
 
-export async function GET() {
+const MAX_SEARCH_LEN = 200;
+
+/** PostgREST `.or()` 구분자(쉼표)와 ILIKE 와일드카드(% _)를 안전하게 제거·정규화한다. */
+function sanitizeSearchTerm(raw: string): string {
+  let s = raw.trim().slice(0, MAX_SEARCH_LEN);
+  s = s.replace(/\\/g, "").replace(/%/g, "").replace(/_/g, "");
+  s = s.replace(/[(),]/g, " ");
+  return s.replace(/\s+/g, " ").trim();
+}
+
+export async function GET(request: Request) {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -16,11 +26,20 @@ export async function GET() {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
 
-  const { data, error } = await supabase
+  const url = new URL(request.url);
+  const term = sanitizeSearchTerm(url.searchParams.get("q") ?? "");
+
+  let query = supabase
     .from("entries")
     .select("id,title,mood,created_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .eq("user_id", user.id);
+
+  if (term.length > 0) {
+    const pattern = `%${term}%`;
+    query = query.or(`title.ilike.${pattern},content.ilike.${pattern},mood.ilike.${pattern}`);
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: "일기 목록을 불러오지 못했습니다." }, { status: 500 });
