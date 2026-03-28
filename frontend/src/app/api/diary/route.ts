@@ -8,12 +8,23 @@ const isValidMood = (value: string): value is Mood => {
 
 const MAX_SEARCH_LEN = 200;
 
-/** PostgREST `.or()` 구분자(쉼표)와 ILIKE 와일드카드(% _)를 안전하게 제거·정규화한다. */
+/**
+ * 검색어 길이를 제한하고, Unicode 글자·숫자·공백만 남긴다.
+ * PostgREST `.or()` 구문(쉼표·점·괄호 등)과 ILIKE 와일드카드(% _)를 건드릴 수 있는 문자는 제거한다.
+ */
 function sanitizeSearchTerm(raw: string): string {
   let s = raw.trim().slice(0, MAX_SEARCH_LEN);
-  s = s.replace(/\\/g, "").replace(/%/g, "").replace(/_/g, "");
-  s = s.replace(/[(),]/g, " ");
+  s = s.replace(/[^\p{L}\p{N}\s]/gu, " ");
   return s.replace(/\s+/g, " ").trim();
+}
+
+/**
+ * PostgREST 필터 값에 예약 문자가 포함될 수 있을 때 큰따옴표로 감싼다.
+ * @see https://postgrest.org/en/stable/references/api/url_grammar.html#reserved-characters
+ */
+function quotePostgrestFilterValue(value: string): string {
+  const escaped = value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  return `"${escaped}"`;
 }
 
 export async function GET(request: Request) {
@@ -36,7 +47,10 @@ export async function GET(request: Request) {
 
   if (term.length > 0) {
     const pattern = `%${term}%`;
-    query = query.or(`title.ilike.${pattern},content.ilike.${pattern},mood.ilike.${pattern}`);
+    const quoted = quotePostgrestFilterValue(pattern);
+    query = query.or(
+      `title.ilike.${quoted},content.ilike.${quoted},mood.ilike.${quoted}`,
+    );
   }
 
   const { data, error } = await query.order("created_at", { ascending: false });
