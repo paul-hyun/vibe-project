@@ -71,7 +71,7 @@ export default function DiaryDetailPage({ params }: DiaryDetailPageProps) {
 
   if (isLoading) {
     return (
-      <section className="rounded-xl border border-zinc-200 bg-white p-6 text-zinc-600">
+      <section className="rounded-3xl border border-gray-100 bg-white p-8 text-sm font-medium text-sequence-muted shadow-sm">
         일기 상세를 불러오는 중...
       </section>
     );
@@ -79,7 +79,7 @@ export default function DiaryDetailPage({ params }: DiaryDetailPageProps) {
 
   if (error) {
     return (
-      <section className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700">
+      <section className="rounded-3xl border border-red-100 bg-red-50 p-8 text-sm font-medium text-red-700 shadow-sm">
         {error}
       </section>
     );
@@ -87,9 +87,14 @@ export default function DiaryDetailPage({ params }: DiaryDetailPageProps) {
 
   if (!entry) {
     return (
-      <section className="rounded-xl border border-zinc-200 bg-white p-6">
-        <h1 className="text-xl font-bold">일기를 찾을 수 없습니다.</h1>
-        <Link href="/diary" className="mt-4 inline-block text-sm text-blue-600 hover:underline">
+      <section className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
+        <h1 className="text-xl font-bold tracking-tight text-gray-900">
+          일기를 찾을 수 없습니다.
+        </h1>
+        <Link
+          href="/diary"
+          className="mt-5 inline-block text-sm font-semibold text-sequence-teal underline-offset-4 hover:underline"
+        >
           목록으로 돌아가기
         </Link>
       </section>
@@ -97,32 +102,38 @@ export default function DiaryDetailPage({ params }: DiaryDetailPageProps) {
   }
 
   return (
-    <section className="rounded-xl border border-zinc-200 bg-white p-6">
-      <h1 className="text-2xl font-bold">{entry.title}</h1>
-      <p className="mt-2 text-sm text-zinc-600">기분: {entry.mood}</p>
-      <p className="mt-1 text-xs text-zinc-500">작성일: {formatDateTime(entry.created_at)}</p>
+    <section className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+        {entry.title}
+      </h1>
+      <p className="mt-3 text-sm font-medium text-sequence-muted">
+        기분: {entry.mood}
+      </p>
+      <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+        작성일: {formatDateTime(entry.created_at)}
+      </p>
 
-      <article className="mt-5 whitespace-pre-wrap rounded-lg bg-zinc-50 p-4 leading-7 text-zinc-800">
+      <article className="mt-6 whitespace-pre-wrap rounded-2xl border border-gray-100 bg-gray-50/80 p-5 leading-7 text-gray-800">
         {entry.content}
       </article>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-8 flex flex-wrap gap-3">
         <Link
           href={`/diary/${entry.id}/edit`}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="inline-flex rounded-lg bg-sequence-mint px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-sequence-mint-dark"
         >
           수정
         </Link>
         <button
           type="button"
           onClick={handleDelete}
-          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+          className="inline-flex rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-100"
         >
           삭제
         </button>
         <Link
           href="/diary"
-          className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100"
+          className="inline-flex rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
         >
           목록으로 돌아가기
         </Link>

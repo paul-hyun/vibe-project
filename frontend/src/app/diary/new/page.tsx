@@ -50,25 +50,33 @@ export default function DiaryNewPage() {
   };
 
   return (
-    <section className="rounded-xl border border-zinc-200 bg-white p-6">
-      <h1 className="text-2xl font-bold">새 일기 작성</h1>
+    <section className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+        새 일기 작성
+      </h1>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
-          <label htmlFor="title" className="mb-1 block text-sm font-medium">
+          <label
+            htmlFor="title"
+            className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-sequence-muted"
+          >
             제목
           </label>
           <input
             id="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none placeholder:text-gray-400 focus:border-sequence-teal focus:ring-2 focus:ring-sequence-mint/25"
             placeholder="오늘 하루를 한 줄로 요약해 보세요"
           />
         </div>
 
         <div>
-          <label htmlFor="content" className="mb-1 block text-sm font-medium">
+          <label
+            htmlFor="content"
+            className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-sequence-muted"
+          >
             본문
           </label>
           <textarea
@@ -76,23 +84,25 @@ export default function DiaryNewPage() {
             rows={8}
             value={content}
             onChange={(event) => setContent(event.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none placeholder:text-gray-400 focus:border-sequence-teal focus:ring-2 focus:ring-sequence-mint/25"
             placeholder="오늘 있었던 일을 자유롭게 적어 보세요"
           />
         </div>
 
         <fieldset>
-          <legend className="mb-2 text-sm font-medium">기분</legend>
+          <legend className="mb-3 text-xs font-semibold uppercase tracking-wider text-sequence-muted">
+            기분
+          </legend>
           <div className="flex flex-wrap gap-2">
             {MOODS.map((item) => (
               <button
                 key={item}
                 type="button"
                 onClick={() => setMood(item)}
-                className={`rounded-md border px-3 py-1.5 text-sm ${
+                className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${
                   mood === item
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-zinc-300 hover:bg-zinc-100"
+                    ? "border-sequence-teal bg-emerald-50/80 text-sequence-teal shadow-sm"
+                    : "border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50"
                 }`}
               >
                 {item}
@@ -101,20 +111,22 @@ export default function DiaryNewPage() {
           </div>
         </fieldset>
 
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? (
+          <p className="text-sm font-medium text-red-600">{error}</p>
+        ) : null}
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-3 pt-1">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-sequence-mint px-5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-sequence-mint-dark disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "저장 중..." : "저장"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="rounded-md border border-zinc-300 px-4 py-2.5 text-sm font-medium hover:bg-zinc-100"
+            className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
           >
             취소
           </button>

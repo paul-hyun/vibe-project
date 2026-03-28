@@ -38,25 +38,25 @@ export default function DiaryLayout({
 
   if (isChecking || !isLoggedIn) {
     return (
-      <section className="rounded-xl border border-zinc-200 bg-white p-6 text-sm text-zinc-600">
+      <section className="rounded-3xl border border-gray-100 bg-white p-8 text-sm font-medium text-sequence-muted shadow-sm">
         인증 상태를 확인하는 중...
       </section>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <nav className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4">
-        <div className="flex gap-2 text-sm">
+    <div className="space-y-6">
+      <nav className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5">
+        <div className="flex flex-wrap gap-2 text-sm">
           <Link
             href="/diary"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 hover:bg-zinc-100"
+            className="rounded-lg border border-gray-200 bg-white px-4 py-2 font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
           >
             목록
           </Link>
           <Link
             href="/diary/new"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 hover:bg-zinc-100"
+            className="rounded-lg border border-gray-200 bg-white px-4 py-2 font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
           >
             새 일기 작성
           </Link>
@@ -65,7 +65,7 @@ export default function DiaryLayout({
           type="button"
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="rounded-md bg-zinc-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-900"
+          className="rounded-lg bg-sequence-teal px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sequence-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
         </button>
